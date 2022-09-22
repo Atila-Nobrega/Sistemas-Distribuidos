@@ -19,8 +19,8 @@ while True:
     message = data[0]
     address = data[1]
     msg = message.decode()
-    if msg == 'Over':
-        print("Connection is Over")
+    if msg == 'fim':
+        print("Fim da conexão!")
         break
  
     print("Equação recebida")
