@@ -11,6 +11,6 @@ message Device {
     string ip = 3;
     int32 porta = 4;
     DeviceType tipo = 5;
-    optional bool ligado = 6;
-    optional float valor = 7;
+    bool ligado = 6;
+    float valor = 7;
 }
