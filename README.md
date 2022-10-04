@@ -3,9 +3,9 @@
 * Paulo Antônio Leal Rêgo
 
 ## Equipe:
-* Átila Nóbrega Maia Aires
-* Tácio Soares Aguiar
-* Luan Ícaro Ferreira Santos
+* Átila Nóbrega Maia Aires - 473754
+* Tácio Soares Aguiar - 485214
+* Luan Ícaro Ferreira Santos - 415170
 
 ## Slide Show:
 [apresentacao.pdf](https://github.com/Atila-Nobrega/Sistemas-Distribuidos/files/9710698/apresentacao.pdf)
