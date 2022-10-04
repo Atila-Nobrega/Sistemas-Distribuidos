@@ -8,7 +8,7 @@
 * Luan Ícaro Ferreira Santos
 
 ## Slide Show:
-[apresentação.pdf](https://github.com/Atila-Nobrega/Sistemas-Distribuidos/files/9710672/apresentacao.pdf)
+[apresentacao.pdf](https://github.com/Atila-Nobrega/Sistemas-Distribuidos/files/9710698/apresentacao.pdf)
 
 # Trabalho 1:
 ## Task 1:
