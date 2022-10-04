@@ -31,8 +31,8 @@ while True:
     oprnd2 = operacao_list[2]
  
     # here we change str to int converstion
-    num1 = int(oprnd1)
-    num2 = int(oprnd2)
+    num1 = float(oprnd1)
+    num2 = float(oprnd2)
     # Here we are perform  basic arithmetic operacao
     if operacao == "+":
         resultado = num1 + num2
