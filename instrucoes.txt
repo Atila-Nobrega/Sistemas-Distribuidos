@@ -1,0 +1,5 @@
+Caso dê erro ao compilar por causa do tkinter, para instalar ele:
+ubuntu:
+sudo apt-get install python3-tk
+windows:
+pip install tk
