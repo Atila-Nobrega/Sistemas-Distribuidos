@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+enum DeviceType{
+    ATUADOR = 0;
+    SENSOR = 1;
+    SENSOR_E_ATUADOR = 2;
+}
+message Device {
+    int32 id = 1;
+    string nome = 2;
+    string ip = 3;
+    int32 porta = 4;
+    DeviceType tipo = 5;
+    bool ligado = 6;
+    float valor = 7;
+}
