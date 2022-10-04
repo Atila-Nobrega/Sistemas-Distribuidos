@@ -7,10 +7,17 @@
 * Tácio Soares Aguiar
 * Luan Ícaro Ferreira Santos
 
+## Slide Show:
+[apresentação.pdf](https://github.com/Atila-Nobrega/Sistemas-Distribuidos/files/9710672/apresentacao.pdf)
+
 # Trabalho 1:
 ## Task 1:
 ### Calculadora
 A calculadora foi implementada em python utilizando protocolo UDP para comunicação server-client. Essa calculadora aceita as 4 operações básicas de soma, subtração, multiplicação e divisão.
+
+O protocolo utilizado segue o padrão, em que, o client manda uma string para o servidor, que recebe e separa a string em 3 partes, transformando em float.  
+
+Então resolve as operações de acordo com o símbolo que permanece em string.
 
 As mensagens são enviadas e recebidas como string codificadas em ASCII, tanto no client quanto no server.
 
@@ -64,6 +71,3 @@ A troca de mensagens é feita por uma string de bytes.
   
   ![alt text](https://github.com/Atila-Nobrega/Sistemas-Distribuidos/blob/main/assets/new6.png?raw=true)
 </details>
-
-# Slide Show:
-  [embed]http://example.com/file.pdf[/embed]
