@@ -51,7 +51,7 @@ def sendMessage():
             else:
                 _thread.interrupt_main()
         except UnicodeEncodeError:
-            print("Erro no envio! Verifique se mensagem funciona com ascci")
+            print("Erro no envio! Verifique se mensagem funciona com ascii")
         except:
             print("Thread sendMessage encerrada!")
             break
