@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+service AtuadorGRPC {
+    rpc desligarLampada (LampadaRequest) returns (LampadaResponse) {}
+    rpc ligarLampada (LampadaRequest) returns (LampadaResponse) {}
+    rpc desligarArCondicionado (ArCondicionadoRequest) returns (ArCondicionadoResponse) {}
+    rpc ligarArCondicionado (ArCondicionadoRequest) returns (ArCondicionadoResponse) {}
+    rpc aumentarTemperatura (ArCondicionadoRequest) returns (ArCondicionadoResponse) {}
+    rpc diminuirTemperatura (ArCondicionadoRequest) returns (ArCondicionadoResponse) {}
+    rpc ligarHumidificador (HumidificadorRequest) returns (HumidificadorResponse) {}
+    rpc desligarHumidificador (HumidificadorRequest) returns (HumidificadorResponse) {}
+}
+
+message LampadaRequest {
+
+}
+
+
+message LampadaResponse {
+    int32 id = 1;
+    string nome = 2;
+    bool status = 3;
+}
+
+message ArCondicionadoRequest {
+
+}
+message ArCondicionadoResponse {
+
+    int32 id = 1;
+    string nome = 2;
+    bool status = 3;
+    float valor = 4;
+}
+message HumidificadorRequest {
+
+}
+message HumidificadorResponse {
+
+    int32 id = 1;
+    string nome = 2;
+    bool status = 3;
+}
