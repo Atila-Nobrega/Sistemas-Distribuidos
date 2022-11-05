@@ -6,9 +6,6 @@ from time import sleep
 from datetime import datetime
 
 producer = KafkaProducer( bootstrap_servers=['127.0.0.1:9092'], value_serializer = lambda value: json.dumps(value).encode())
-admin_client = KafkaAdminClient(bootstrap_servers=['127.0.0.1:9092'])
-
-print()
 
 id = int(input("Enter device ID number: "))
 
