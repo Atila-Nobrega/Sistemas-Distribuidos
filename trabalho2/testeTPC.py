@@ -19,7 +19,7 @@ if mensagem == 'none':
 else:
     print(mensagem)
 
-client.send(bytes('1',encoding="utf-8"))
+client.send(bytes('2',encoding="utf-8"))
 
 sleep(1)
 
