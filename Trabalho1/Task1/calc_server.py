@@ -47,3 +47,5 @@ while True:
    
     output = str(resultado)
     server.sendto(output.encode(), address)
+
+protoc -I=. --python_out=. ./device.proto
