@@ -37,15 +37,14 @@ class ServerArCondicionado(atuador_pb2_grpc.AtuadorGRPCServicer):
             
             atuador.status = False
 
-            to_txt = f"{atuador.valor}"
+            to_txt = f"30"
 
             with open("temperatura.txt", 'w') as f:
                 f.write(to_txt)
             f.close()
             return atuador
-    def aumentarTemperatura(self, request, context):
-            
 
+    def aumentarTemperatura(self, request, context):
             atuador.status = True
 
             valor = atuador.valor
@@ -54,21 +53,13 @@ class ServerArCondicionado(atuador_pb2_grpc.AtuadorGRPCServicer):
                 f.write(to_txt)
             f.close()
 
-            while(valor < atuador.valor + 0.8):
-                f = open('temperatura.txt', 'r')
-                valor = float(str(f.read()))
-                f.close()
-                valor = valor + 0.2
-                to_txt = f"{valor}"
-                
-                with open("temperatura.txt", 'w') as f:
-                
-                    f.write(to_txt)
-                
-                f.close()
-                
-                time.sleep(5)
-            atuador.valor = valor
+            f = open('temperatura.txt', 'w')
+            atuador.valor = atuador.valor + 1
+            valor = atuador.valor
+            to_txt = f"{valor}"
+            f.write(to_txt)
+            
+            f.close()
             return atuador
 
 
@@ -81,21 +72,12 @@ class ServerArCondicionado(atuador_pb2_grpc.AtuadorGRPCServicer):
                 f.write(to_txt)
             f.close()
     
-            while(valor > atuador.valor - 0.8):
-                f = open('temperatura.txt', 'r')
-                valor = float(str(f.read()))
-                f.close()
-                valor = valor - 0.2
-                to_txt = f"{valor}"
-                
-                with open("temperatura.txt", 'w') as f:
-                
-                    f.write(to_txt)
-                
-                f.close()
-                
-                time.sleep(0.2)
-            atuador.valor = valor
+            f = open('temperatura.txt', 'w')
+            atuador.valor = atuador.valor - 1
+            valor = atuador.valor
+            to_txt = f"{valor}"
+            f.write(to_txt)
+
             return atuador
 
 def serve():
@@ -110,6 +92,7 @@ def serve():
 if __name__ == "__main__":
     
     try:
+        print("Iniciando servidor Arcondicionado.")
         serve()
     except:
         print("Encerrando o servidor!")

@@ -51,6 +51,7 @@ if __name__ == "__main__":
     
     
     try:
+        print("Iniciando servidor Humidificador.")
         serve()
     except:
         print("Encerrando o servidor!")

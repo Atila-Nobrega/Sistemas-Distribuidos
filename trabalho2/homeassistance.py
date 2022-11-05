@@ -28,6 +28,17 @@ class Device:
 listaDispositivos = []
 ###### ------------------------ ######
 
+arcondicionado = Device("Arcondicionado")
+arcondicionado.data = '{"id": "1", "nome": "Arcondicionado", "valor": "0", "status": "desligado"}'
+listaDispositivos.append(arcondicionado)
+lampada = Device("Lampada")
+lampada.data = '{"id": "2", "nome": "Lampada", "valor": "0", "status": "desligado"}'
+listaDispositivos.append(lampada)
+humidificador = Device("Humidificador")
+humidificador.data = '{"id": "1", "nome": "Humidificador", "valor": "0", "status": "desligado"}'
+listaDispositivos.append(humidificador)
+
+
 
 def consumidorSensor(topico):
     print(f'Iniciada a thread do {topico}')
@@ -98,20 +109,22 @@ def envioDeDispositivos():
                 print("Esperando comando do WebServer")
 
                 comando = client.recv(2048).decode("utf-8")
+                comando = comando.split('|')
                 if not comando: 
                     print("Conexão com Webserver Perdida")
                     break
+                
+                mensagem = []
 
-                if(comando == '1'): #Retorna dispositivos
+                if(comando[0] == '1'): #Retorna dispositivos
 
-                    mensagem = []
                     with lock2:
                         lista = listaDispositivos.copy()
                     for device in lista:
                         mensagem.append(device.data)
                     
                     try:
-                        mensagem= ', '.join(mensagem)
+                        mensagem= '|'.join(mensagem)
                     except:
                         mensagem = 'none'
 
@@ -119,90 +132,94 @@ def envioDeDispositivos():
 
                     print("enviado dados dos sensores...")
 
-                elif(comando == '2'): #envia comando pro atuador...
+                elif(comando[0] == '2'):
+                    ArCondicionado(comando[1])
+                    mensagem = "Success"
 
-                    print("1. Acessar ar condicionado")
-                    print("2. Acessar lampada")
-                    print("3. Acessar umidificador")
-                    rpc_call = input("Qual dispositivo você deseja acessar?")
+                    client.send(bytes(mensagem, encoding="utf-8"))
+                
+                elif(comando[0] == '3'):
+                    Lampada(comando[1])
+                    mensagem = "Success"
 
-                    if(rpc_call == '1'):
-                        ArCondicionado()
+                    client.send(bytes(mensagem, encoding="utf-8"))
 
-                    if(rpc_call == '2'):
-                        Lampada()
+                elif(comando[0] == '4'):
+                    Humidificador(comando[1])
+                    mensagem = "Success"
 
+                    client.send(bytes(mensagem, encoding="utf-8"))
 
-                    if(rpc_call == '3'):
-                        Humidificador()
+                else:
+                    print("Erro na API")
+                    break
+
             except Exception as e:
                 print(e)
+                mensagem = "Fail!"
+
+                client.send(bytes(mensagem, encoding="utf-8"))
                 break
             except KeyboardInterrupt:
                 break
 
-def ArCondicionado():
-                        with grpc.insecure_channel('localhost:50051') as channel:
-                            stub = atuador_pb2_grpc.AtuadorGRPCStub(channel)
+def ArCondicionado(grpc_call):
+    with grpc.insecure_channel('localhost:50051') as channel:
+        stub = atuador_pb2_grpc.AtuadorGRPCStub(channel)
 
-                            print("1. para ligar ar condicionado")
-                            print("2. para desligar ar condicionado")
-                            print("3. para aumentar a temperatura")
-                            print("4. para diminuir a temperatura")
-                            
-                            grpc_call = input('Digite um comando: ')
-                            if (grpc_call == '1'):
-                                ar_request = atuador_pb2.ArCondicionadoRequest()
-                                ar_reply = stub.ligarArCondicionado(ar_request)
-                                print(ar_reply)
-                            
-                            if (grpc_call == '2'):
-                                ar_request = atuador_pb2.ArCondicionadoRequest()
-                                ar_reply = stub.desligarArCondicionado(ar_request)
-                                print(ar_reply)
-                            
-                            if (grpc_call == '3'):
-                                ar_request = atuador_pb2.ArCondicionadoRequest()
-                                ar_reply = stub.aumentarTemperatura(ar_request)
-                                print(ar_reply)
-                            
-                            if (grpc_call == '4'):
-                                ar_request = atuador_pb2.ArCondicionadoRequest()
-                                ar_reply = stub.diminuirTemperatura(ar_request)
-                                print(ar_reply)
-def Lampada():
-                            with grpc.insecure_channel('localhost:50052') as channel:
-                                stub = atuador_pb2_grpc.AtuadorGRPCStub(channel)
-                                
-                                print("1. para ligar a Lampada")
-                                print("2. para desligar a Lampada")
-                                grpc_call = input('Digite um comando: ')
+        if (grpc_call == '1'): #ligar
+            arcondicionado.data = '{"id": "1", "nome": "Arcondicionado", "valor": "' + f'{ar_reply.valor}' + '", "status": "ligado"}'
+            ar_request = atuador_pb2.ArCondicionadoRequest()
+            ar_reply = stub.ligarArCondicionado(ar_request)
+            print(ar_reply)
+        
+        if (grpc_call == '2'): #desligar
+            arcondicionado.data = '{"id": "1", "nome": "Arcondicionado", "valor": "0", "status": "desligado"}'
+            ar_request = atuador_pb2.ArCondicionadoRequest()
+            ar_reply = stub.desligarArCondicionado(ar_request)
+            print(ar_reply)
+        
+        if (grpc_call == '3'): #aumentar temperatura em 1
+            ar_request = atuador_pb2.ArCondicionadoRequest()
+            ar_reply = stub.aumentarTemperatura(ar_request)
+            arcondicionado.data = '{"id": "1", "nome": "Arcondicionado", "valor": "' + f'{ar_reply.valor}' + '", "status": "ligado"}'
+            print(ar_reply)
+        
+        if (grpc_call == '4'): #diminuir temperatura em 1
+            ar_request = atuador_pb2.ArCondicionadoRequest()
+            ar_reply = stub.diminuirTemperatura(ar_request)
+            arcondicionado.data = '{"id": "1", "nome": "Arcondicionado", "valor": "' + f'{ar_reply.valor}' + '", "status": "ligado"}'
+            print(ar_reply)
+def Lampada(grpc_call):
+    with grpc.insecure_channel('localhost:50052') as channel:
+        stub = atuador_pb2_grpc.AtuadorGRPCStub(channel)
 
-                                if (grpc_call == '1'):
-                                    lampada_request = atuador_pb2.LampadaRequest()
-                                    lampada_reply = stub.ligarLampada(lampada_request)
-                                    print(lampada_reply)
-                                
-                                if (grpc_call == '2'):
-                                    lampada_request = atuador_pb2.LampadaRequest()
-                                    lampada_reply = stub.desligarLampada(lampada_request)
-                                    print(lampada_reply)
-def Humidificador():
-                            with grpc.insecure_channel('localhost:50053') as channel:
-                                stub = atuador_pb2_grpc.AtuadorGRPCStub(channel)
-                                
-                                print("1. para ligar o humidificador")
-                                print("2. para desligar o humidificador")
-                                grpc_call = input('Digite o humidificador: ')
-                                if (grpc_call == '1'):
-                                    humidificador_request = atuador_pb2.HumidificadorRequest()
-                                    humidificador_reply = stub.ligarHumidificador(humidificador_request)
-                                    print(humidificador_reply)
-                                
-                                if (grpc_call == '2'):
-                                    humidificador_request = atuador_pb2.HumidificadorRequest()
-                                    humidificador_reply = stub.desligarHumidificador(humidificador_request)
-                                    print(humidificador_reply)
+        if (grpc_call == '1'):
+            lampada.data = '{"id": "2", "nome": "Lampada", "valor": "99", "status": "ligado"}'
+            lampada_request = atuador_pb2.LampadaRequest()
+            lampada_reply = stub.ligarLampada(lampada_request)
+            print(lampada_reply)
+        
+        if (grpc_call == '2'):
+            lampada.data = '{"id": "2", "nome": "Lampada", "valor": "99", "status": "desligado"}'
+            lampada_request = atuador_pb2.LampadaRequest()
+            lampada_reply = stub.desligarLampada(lampada_request)
+            print(lampada_reply)
+def Humidificador(grpc_call):
+    with grpc.insecure_channel('localhost:50053') as channel:
+        stub = atuador_pb2_grpc.AtuadorGRPCStub(channel)
+
+        if (grpc_call == '1'):
+            humidificador.data = '{"id": "1", "nome": "Humidificador", "valor": "0", "status": "ligado"}'
+            humidificador_request = atuador_pb2.HumidificadorRequest()
+            humidificador_reply = stub.ligarHumidificador(humidificador_request)
+            print(humidificador_reply)
+        
+        if (grpc_call == '2'):
+            humidificador.data = '{"id": "1", "nome": "Humidificador", "valor": "0", "status": "desligado"}'
+            humidificador_request = atuador_pb2.HumidificadorRequest()
+            humidificador_reply = stub.desligarHumidificador(humidificador_request)
+            print(humidificador_reply)
 
 print("---INICIANDO HOMEASSISTANCE---")
 thread1 = threading.Thread(target=envioDeDispositivos,args=(),daemon=True)

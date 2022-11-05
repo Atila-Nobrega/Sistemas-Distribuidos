@@ -54,6 +54,7 @@ def serve():
 
 if __name__ == "__main__":
     try:
+        print("Iniciando servidor Lampada.")
         serve()
     except:
         print("Encerrando o servidor!")
