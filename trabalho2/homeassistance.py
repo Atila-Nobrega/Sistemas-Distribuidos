@@ -168,9 +168,9 @@ def ArCondicionado(grpc_call):
         stub = atuador_pb2_grpc.AtuadorGRPCStub(channel)
 
         if (grpc_call == '1'): #ligar
-            arcondicionado.data = '{"id": "1", "nome": "Arcondicionado", "valor": "' + f'{ar_reply.valor}' + '", "status": "ligado"}'
             ar_request = atuador_pb2.ArCondicionadoRequest()
             ar_reply = stub.ligarArCondicionado(ar_request)
+            arcondicionado.data = '{"id": "1", "nome": "Arcondicionado", "valor": "' + f'{ar_reply.valor}' + '", "status": "ligado"}'
             print(ar_reply)
         
         if (grpc_call == '2'): #desligar
